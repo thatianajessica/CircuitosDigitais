@@ -5,7 +5,8 @@ entity FlipFlopJK is
 port(
 	J, K : in std_logic;
 	clk : in std_logic;
-	Q, Qbar : out std_logic
+	Q, Qbar : out std_logic;
+	preset, clear : in std_logic
 );
 end FlipFlopJK;
 
@@ -14,9 +15,13 @@ signal Qsignal: std_logic;
 	
 begin	
 
-	process(clk)
+	process(clk, clear,preset)
 	begin
-		if(clk'event and clk='0') then	
+		if (clear = '0') then
+			Qsignal <= '0';
+		elsif(preset = '0') then
+			Qsignal <= '1';
+		elsif(clk'event and clk='0') then	
 			if(J = '0' and K = '0') then
 				Qsignal <= not Qsignal;
 			elsif (J = '0' and K = '1') then
